@@ -1,88 +1,122 @@
+-----
 ## name: github-push
-version: 1.0.0
-description: Kích hoạt khi user muốn tạo repo mới trên GitHub, push file/code lên GitHub, setup README đẹp, thêm badge, làm README song ngữ Anh-Việt, thêm Version History. Trigger phrases: “push to github”, “tạo repo và push”, “github push”, “push lên github”, “create github repo”, “setup github”, “push skill to github”, “tạo repo github”.
+version: 2.0.0
+description: Kich hoat khi user muon tao repo moi tren GitHub, push file hoac code len GitHub, setup README dep, them badge, lam README song ngu Anh-Viet, them Version History. BAT CU KHI NAO user noi: “push to github”, “tao repo va push”, “github push”, “push len github”, “create github repo”, “setup github”, “push skill to github”, “tao repo github”, “create repo”, “push code”. Vi du: “Tao repo github cho skill nay va push len”, “push cai nay len github voi readme song ngu”, “setup github repo cho project nay”. Khong kich hoat khi user chi hoi ve kien thuc git, hoi ve GitHub Actions, hoac khong co y dinh thuc su tao hoac push len repo.
 
-## Mục đích
+# GitHub Push
 
-Giúp user nhanh chóng tạo repo GitHub mới + push code/files + setup README chuyên nghiệp (có badge, song ngữ Anh-Việt, Version History) chỉ bằng vài câu lệnh tự nhiên. Kết quả phải sạch sẽ, đẹp, sẵn sàng sử dụng.
+Tao repo GitHub moi + push code/files + setup README chuyen nghiep chi bang vai cau tu nhien.
+Output: repo sach, README dep song ngu, badge day du, san sang su dung ngay.
 
-## Workflow chính
+## Workflow chinh
 
-### Bước 1 — Xác định yêu cầu
-Hỏi hoặc phân tích từ user:
-- Tên repo mong muốn (nếu chưa có)
-- Mô tả ngắn gọn của project
-- Loại project: Grok Skill / Web App / Library / Script / Khác
-- Có muốn README song ngữ Anh-Việt không? (mặc định: có)
-- Public hay Private? (mặc định: Public)
-- Có cần LICENSE không? (mặc định: MIT)
+### Buoc 1 — Xac dinh yeu cau
 
-### Bước 2 — Tạo repository
-Sử dụng tool `github___create_repository`:
-- name: tên repo đã chuẩn hóa (kebab-case)
-- description: mô tả ngắn
-- private: true/false
-- autoInit: true
+Kiem tra context tu user. Neu thieu, hoi toi thieu:
 
-### Bước 3 — Chuẩn bị nội dung
-Tạo các file cần thiết:
-- `README.md` (song ngữ Anh-Việt + badge + Version History)
-- `LICENSE` (MIT nếu user đồng ý)
-- `.gitignore` (phù hợp với loại project)
-- Các file code chính (nếu user cung cấp)
+- Ten repo mong muon (chua co → goi y kebab-case tu ten project)
+- Mo ta ngan gon cua project (1 dong)
+- Loai project (chon 1): Grok Skill | Web App | Library | Script | Other
+- Public hay Private? (mac dinh: Public)
 
-### Bước 4 — Tạo README song ngữ đẹp
-README phải có cấu trúc:
-1. Tiêu đề + dòng badge đẹp (Version, License, Last Commit, Stars, Grok Skill nếu là skill)
-2. Mô tả ngắn bằng tiếng Anh
-3. `---`
-4. `## English` → đầy đủ các section
-5. `---`
-6. `## Tiếng Việt` → bản dịch tương ứng
-7. `## Version History` (bảng)
-8. Footer có link LICENSE và repo
+Khong hoi nhung gi user da noi ro.
 
-Badge phổ biến nên có:
-- Version
-- License (github/license)
-- Last Commit
-- Stars (social)
-- Grok Skill (nếu là skill)
+### Buoc 2 — Tao repository
 
-### Bước 5 — Push files
-Sử dụng `github___push_files` hoặc `github___create_or_update_file` để push tất cả file cùng lúc với commit message rõ ràng.
+Goi tool `github___create_repository` voi:
 
-### Bước 6 — Hoàn tất
-- Trả link repo
-- Hướng dẫn user clone hoặc tiếp tục phát triển
-- Hỏi có muốn thêm gì nữa không (release, topics, etc.)
+|Tham so    |Gia tri            |
+|-----------|-------------------|
+|name       |ten-repo-kebab-case|
+|description|mo ta ngan         |
+|private    |false (mac dinh)   |
+|autoInit   |true               |
 
-## Gotchas
+Neu repo da ton tai → hoi user co muon push vao repo do khong.
 
-|#|Vấn đề hay gặp                              |Cách xử lý                                                                 |
-|---|---------------------------------------------|----------------------------------------------------------------------------|
-|1 |User chưa connect GitHub                    |Nhắc user connect GitHub account trước khi dùng skill                      |
-|2 |Tên repo bị trùng hoặc không hợp lệ         |Đề xuất tên thay thế (kebab-case, ngắn gọn)                                |
-|3 |README quá dài hoặc lộn xộn                 |Giữ cấu trúc rõ ràng, English trước, Vietnamese sau, dùng heading hợp lý   |
-|4 |Quên thêm badge Last Commit / License       |Luôn thêm 4-5 badge phổ biến ở header                                      |
-|5 |User muốn custom nhiều badge                |Hỏi thêm badge nào (ví dụ: Build Status, Coverage, v.v.) rồi thêm          |
-|6 |Project là Grok Skill                       |Tự động thêm badge "Grok Skill" + mention SKILL.md                         |
-|7 |Muốn Version History chi tiết               |Tạo bảng với cột: Version | Date | Changes                                   |
+### Buoc 3 — Tao noi dung files
 
-## Ví dụ thực tế
+Chuan bi truoc khi push:
 
-**User:** "Tạo repo github cho skill mới tên là x-post-reply và push lên"
+|File          |Dieu kien tao                                        |
+|--------------|-----------------------------------------------------|
+|README.md     |Luon co — song ngu Anh-Viet + badge + Version History|
+|LICENSE       |Tao MIT mac dinh (hoi neu user co preference khac)   |
+|.gitignore    |Tao phu hop voi loai project da xac dinh o Buoc 1    |
+|SKILL.md      |Chi tao neu loai project la Grok Skill               |
+|File code khac|Chi tao neu user cung cap noi dung cu the            |
 
-**Kết quả skill:**
-1. Tạo repo `x-post-reply`
-2. Push `SKILL.md` + `README.md` song ngữ + `LICENSE`
-3. Thêm đầy đủ badge + Version History
-4. Trả link: https://github.com/chuong1224/x-post-reply
+### Buoc 4 — Viet README song ngu chuan
 
-**User:** "push cái này lên github với readme song ngữ"
+Cau truc README bat buoc theo thu tu nay:
 
-**Kết quả:** Tạo repo mới hoặc push vào repo hiện có (nếu user chỉ định), setup README bilingual đẹp.
+```
+[Badge row]
+
+# Ten Project
+
+> Mo ta 1 dong bang tieng Anh
 
 ---
 
-*Skill version: 1.0.0* | Tạo bởi N0v4Ph4n | Dành cho Grok SuperGrok users
+## English
+### Overview
+### Features
+### Installation
+### Usage
+### License
+
+---
+
+## Tieng Viet
+### Tong quan
+### Tinh nang
+### Cai dat
+### Huong dan su dung
+### Giay phep
+
+---
+
+## Version History
+
+| Version | Date | Changes |
+|---|---|---|
+| 1.0.0 | YYYY-MM-DD | Initial release |
+```
+
+Badge chuan (them theo loai project):
+
+|Badge                     |Loai project ap dung|
+|--------------------------|--------------------|
+|Version (shields.io/badge)|Tat ca              |
+|License: MIT              |Tat ca              |
+|Last Commit               |Tat ca              |
+|Stars (social)            |Tat ca              |
+|Grok Skill (custom badge) |Chi Grok Skill      |
+|Build Status              |Web App / Library   |
+
+### Buoc 5 — Push files
+
+Su dung `github___push_files` de push tat ca files cung luc.
+
+Commit message mac dinh: `feat: initial setup with bilingual README and badges`
+
+Neu push mot file rieng le → dung `github___create_or_update_file`.
+
+### Buoc 6 — Hoan tat
+
+- Tra link repo day du (https://github.com/username/repo-name)
+- Hoi co muon them khong: release, topics, GitHub Pages, v.v.
+
+## Gotchas
+
+|#|Van de hay gap                                                      |Cach xu ly                                                                                           |
+|-|--------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+|1|User chua connect GitHub MCP                                        |Nhac connect GitHub account trong Settings truoc khi chay skill                                      |
+|2|Ten repo bi trung hoac co ky tu khong hop le                        |De xuat ten thay the (kebab-case, chi dung a-z, 0-9, dau gach ngang)                                 |
+|3|User cung cap file SKILL.md → quen mention trong README             |Tu dong them “Includes SKILL.md” vao Features section khi loai project la Grok Skill                 |
+|4|README qua dai vi dich tung dong                                    |Viet English section day du truoc, sau do tom tat Vietnamese (khong phai dich word-by-word)          |
+|5|push_files that bai vi autoInit: false tao repo rong khong co commit|Kiem tra autoInit: true khi goi create_repository; neu repo cu khong co commit → tao README gia truoc|
+|6|User muon push vao repo da co san                                   |Hoi ten repo + username, dung create_or_update_file thay vi create_repository                        |
+|7|Badge URL sai vi repo chua public hoac chua co release              |Dung shields.io/badge voi gia tri hardcode cho version, khong dung dynamic badge cho repo moi        |
+|8|Commit message khong ro rang                                        |Luon dung Conventional Commits: feat/fix/docs/chore + mo ta ngan                                     |
